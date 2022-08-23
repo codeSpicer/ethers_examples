@@ -1,14 +1,20 @@
-const { ethers } = require("ethers");
+const { ethers, utils } = require("ethers");
+// require("dotenv").config();
+require("dotenv").config({ debug: true });
 
-const INFURA_ID = ''
-const provider = new ethers.providers.JsonRpcProvider(`https://mainnet.infura.io/v3/${INFURA_ID}`)
+const provider = new ethers.providers.JsonRpcProvider(
+  `${process.env.INFURA_RINKEBY}${process.env.APIKEY}`
+);
 
-const address = '0x73BCEb1Cd57C711feaC4224D062b0F6ff338501e'
+const getInfo = async () => {
+  console.log("current block number is:" + (await provider.getBlockNumber()));
 
-const main = async () => {
-    const balance = await provider.getBalance(address)
-    console.log(`\nETH Balance of ${address} --> ${ethers.utils.formatEther(balance)} ETH\n`)
-}
+  console.log(
+    "balance of your account is:" +
+      ethers.utils.formatEther(
+        await provider.getBalance(process.env.PUBLIC_KEY)
+      )
+  );
+};
 
-main()
-
+getInfo();
